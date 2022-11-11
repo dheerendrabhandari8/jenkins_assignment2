@@ -1,0 +1,36 @@
+#! /bin/bash
+ #set -x
+ action=$1
+ if [ $action == "list" ]
+ then
+  echo "$(git branch)"
+ fi
+ if [ $action == "create" ] && [ $# == 2 ]
+ then
+   branch=$2
+   echo "$(git branch $branch)"
+   echo "created branch ${branch}"
+ fi
+ if [ $action == "delete" ] && [ $# == 2 ]
+ then
+   branch=$2
+   echo "$(git branch -d $branch)"
+   echo "deleted branch ${branch}"
+ fi
+ if [ $action == "merge" ] && [ $# == 3 ]
+ then
+   branch_1=${2:-$branch_1}
+   branch_2=${3:-$branch_2}
+   git checkout $branch_1
+   git merge $branch_2
+   echo "merging $branch_2 into $branch_1"
+   echo "$(git branch)"
+ fi
+ if [ $action == "rebase" ] && [ $# == 3 ]
+ then
+   branch_1=${2:-$branch_1}
+   branch_2=${3:-$branch_2}
+   git checkout $branch_1
+   git rebase $branch_2
+   echo "rebasing $branch_2 into $branch_1"
+ fi
